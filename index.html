@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #1a1a2e;
+    --ink: #1a1a2e;h
     --ink2: #2d2d44;
     --gold: #c9a84c;
     --gold-light: #e8c97a;
@@ -599,7 +599,7 @@ function startTest() {
   userName = document.getElementById('user-name').value.trim();
   userRole = document.getElementById('user-role').value.trim();
   userEmail = document.getElementById('user-email').value.trim();
-  if (!userName) { alert('Per favore inserisci il tuo nome.'); return; }
+  if (!userName) { alert('if (!userName) { userName = 'Candidato'; } il tuo nome.'); return; }
   showScreen('screen-questions');
   renderQ();
 }
