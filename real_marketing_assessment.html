@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valutazione Professionale — ReAL Marketing Division</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --ink2: #2d2d44;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-pale: #f5ecd4;
+    --cream: #faf8f4;
+    --white: #ffffff;
+    --muted: #7a7a8a;
+    --border: #e2ddd6;
+    --success: #2d6a4f;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .site-header {
+    background: var(--ink);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+  }
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.02em;
+  }
+  .logo-text span { color: var(--gold); }
+  .header-badge {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid rgba(201,168,76,0.4);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--ink);
+    padding: 56px 32px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(201,168,76,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 5vw, 38px);
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
+  .hero p {
+    color: rgba(255,255,255,0.6);
+    max-width: 520px;
+    margin: 0 auto 28px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+  .hero-meta span {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hero-meta span::before {
+    content: '';
+    display: inline-block;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* LAYOUT */
+  .container { max-width: 640px; margin: 0 auto; padding: 0 20px; }
+
+  /* INTRO CARD */
+  .intro-section { padding: 36px 0 0; }
+  .intro-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .intro-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .intro-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .dimensions-list {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .dim-pill {
+    font-size: 12px;
+    padding: 6px 12px;
+    background: var(--gold-pale);
+    color: var(--ink2);
+    border-radius: 20px;
+    text-align: center;
+    border: 1px solid rgba(201,168,76,0.25);
+  }
+
+  /* INPUT FIELDS */
+  .user-form { margin-bottom: 24px; }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .field input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    transition: border-color 0.2s;
+  }
+  .field input:focus { outline: none; border-color: var(--gold); }
+
+  /* START BUTTON */
+  .btn-start {
+    width: 100%;
+    padding: 14px;
+    background: var(--ink);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-start::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+  }
+  .btn-start:hover { background: var(--ink2); }
+  .btn-start:active { transform: scale(0.99); }
+
+  /* SCREENS */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* PROGRESS */
+  .progress-section {
+    position: sticky;
+    top: 64px;
+    background: var(--cream);
+    padding: 16px 0 12px;
+    z-index: 10;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .progress-label { font-size: 12px; color: var(--muted); }
+  .progress-count {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .progress-track {
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  /* QUESTION CARD */
+  .q-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 16px;
+    animation: fadeIn 0.25s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .q-dim {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .q-dim::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(201,168,76,0.2);
+  }
+  .q-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 22px;
+  }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option-btn {
+    padding: 11px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--ink2);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .option-btn::before {
+    content: '';
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .option-btn:hover { border-color: var(--gold-light); background: var(--gold-pale); }
+  .option-btn.selected {
+    border-color: var(--gold);
+    background: var(--gold-pale);
+    color: var(--ink);
+  }
+  .option-btn.selected::before {
+    border-color: var(--gold);
+    background: var(--gold);
+    box-shadow: inset 0 0 0 3px var(--gold-pale);
+  }
+
+  /* NAV */
+  .nav-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+  .btn-nav {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-nav:hover { border-color: var(--ink); color: var(--ink); }
+  .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+  .btn-nav.primary {
+    background: var(--ink);
+    color: var(--white);
+    border-color: var(--ink);
+  }
+  .btn-nav.primary:hover { background: var(--ink2); }
+  .btn-nav.primary:disabled { opacity: 0.4; }
+
+  /* THANK YOU */
+  .thankyou-screen {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+  }
+  .thankyou-icon {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--gold-pale);
+    border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 28px;
+  }
+  .thankyou-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .thankyou-screen p {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 400px;
+    line-height: 1.7;
+  }
+  .thankyou-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin: 20px auto;
+  }
+
+  /* FOOTER */
+  .site-footer {
+    background: var(--ink);
+    text-align: center;
+    padding: 24px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.06em;
+    margin-top: 40px;
+  }
+  .site-footer span { color: var(--gold); opacity: 0.7; }
+
+  /* SENDING STATE */
+  .sending-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,26,46,0.85);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    color: var(--white);
+    font-size: 14px;
+  }
+  .sending-overlay.active { display: flex; }
+  .spinner {
+    width: 32px; height: 32px;
+    border: 2px solid rgba(201,168,76,0.3);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 480px) {
+    .dimensions-list { grid-template-columns: 1fr; }
+    .hero { padding: 40px 20px 36px; }
+    .q-text { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo-text">Re<span>AL</span> Marketing Division</div>
+  <div class="header-badge">Valutazione Professionale</div>
+</header>
+
+<div class="sending-overlay" id="sending-overlay">
+  <div class="spinner"></div>
+  <span>Invio in corso...</span>
+</div>
+
+<!-- SCREEN: INTRO -->
+<div class="screen active" id="screen-intro">
+  <div class="hero">
+    <div class="hero-label">Assessment · Competenze Professionali</div>
+    <h1>Scopri il tuo profilo<br>professionale</h1>
+    <p>Un test attitudinale basato sul modello Big Five per comprendere le tue dimensioni professionali chiave.</p>
+    <div class="hero-meta">
+      <span>30 domande</span>
+      <span>Circa 5 minuti</span>
+      <span>Nessuna risposta sbagliata</span>
+    </div>
+  </div>
+
+  <div class="container intro-section">
+    <div class="intro-card">
+      <h3>Le 6 dimensioni analizzate</h3>
+      <p>Il questionario misura sei tratti fondamentali che insieme definiscono il tuo stile professionale.</p>
+      <div class="dimensions-list">
+        <div class="dim-pill">Apertura all'innovazione</div>
+        <div class="dim-pill">Organizzazione e metodo</div>
+        <div class="dim-pill">Motivazione e iniziativa</div>
+        <div class="dim-pill">Collaborazione</div>
+        <div class="dim-pill">Stabilità emotiva</div>
+        <div class="dim-pill">Leadership e influenza</div>
+      </div>
+    </div>
+
+    <div class="intro-card">
+      <h3>Come funziona</h3>
+      <p>Per ogni affermazione scegli l'opzione che ti descrive meglio. Non esistono risposte giuste o sbagliate: ogni risposta contribuisce a costruire un profilo unico. Al termine, il tuo consulente analizzerà i risultati e ti contatterà per una sessione personalizzata.</p>
+    </div>
+
+    <div class="user-form">
+      <div class="field">
+        <label>Il tuo nome e cognome</label>
+        <input type="text" id="user-name" placeholder="Es. Mario Rossi" autocomplete="name" />
+      </div>
+      <div class="field">
+        <label>Azienda / Ruolo attuale</label>
+        <input type="text" id="user-role" placeholder="Es. Responsabile marketing, Titolare, etc." />
+      </div>
+      <div class="field">
+        <label>La tua email</label>
+        <input type="email" id="user-email" placeholder="nome@azienda.it" autocomplete="email" />
+      </div>
+    </div>
+
+    <button class="btn-start" onclick="startTest()">Inizia la valutazione</button>
+    <div style="height:32px"></div>
+  </div>
+</div>
+
+<!-- SCREEN: QUESTIONS -->
+<div class="screen" id="screen-questions">
+  <div class="container">
+    <div class="progress-section">
+      <div class="progress-top">
+        <span class="progress-label" id="q-dim-label">Apertura all'innovazione</span>
+        <span class="progress-count" id="q-counter">1 / 30</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="q-card" id="q-card">
+      <div class="q-dim" id="q-dim"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="q-options"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-nav" id="btn-prev" onclick="prevQ()" disabled>← Indietro</button>
+      <button class="btn-nav primary" id="btn-next" onclick="nextQ()" disabled>Avanti →</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: THANK YOU -->
+<div class="screen" id="screen-thankyou">
+  <div class="container">
+    <div class="thankyou-screen">
+      <div class="thankyou-icon">✓</div>
+      <h2>Grazie per aver completato<br>la valutazione</h2>
+      <div class="thankyou-divider"></div>
+      <p>Il tuo consulente ReAL Marketing Division ha ricevuto i tuoi risultati e ti contatterà presto per fissare la sessione di analisi personalizzata.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  © <span>ReAL Marketing Division</span> · Valutazione riservata ad uso consulenziale
+</footer>
+
+<script>
+
+const DIMS = [
+  { id:'O', name:'Apertura all\'innovazione' },
+  { id:'C', name:'Organizzazione e metodo' },
+  { id:'E', name:'Motivazione e iniziativa' },
+  { id:'A', name:'Collaborazione' },
+  { id:'N', name:'Stabilità emotiva' },
+  { id:'L', name:'Leadership e influenza' }
+];
+
+const QUESTIONS = [
+  {dim:'O', text:'Quando si presenta un problema nuovo, tendo a proporre soluzioni originali piuttosto che affidarmi a metodi già testati.'},
+  {dim:'O', text:'Mi appassiono facilmente a nuove idee, tendenze o tecnologie, anche se non riguardano direttamente il mio lavoro.'},
+  {dim:'O', text:'Quando valuto una proposta, sono disposto a rimettere in discussione i miei convincimenti se gli argomenti sono solidi.'},
+  {dim:'O', text:'Trovo stimolante lavorare in contesti ambigui dove le regole non sono ancora definite.'},
+  {dim:'O', text:'Leggo o mi informo regolarmente su argomenti al di fuori della mia area di competenza.'},
+  {dim:'C', text:'Ho l\'abitudine di pianificare le mie attività settimanali con anticipo e di rispettare le priorità che mi sono dato.'},
+  {dim:'C', text:'Quando prendo un impegno, raramente lo rimando o lo dimentico.'},
+  {dim:'C', text:'Di fronte a un progetto complesso, dedico tempo a strutturarlo prima di agire.'},
+  {dim:'C', text:'Presto molta attenzione ai dettagli: gli errori di precisione mi infastidiscono.'},
+  {dim:'C', text:'Riesco a mantenere ordine nelle mie responsabilità anche nei periodi di alta pressione lavorativa.'},
+  {dim:'E', text:'Affronto i compiti con energia e entusiasmo, anche quelli di routine.'},
+  {dim:'E', text:'Tendo a prendere l\'iniziativa senza aspettare che qualcuno me lo chieda.'},
+  {dim:'E', text:'Nei contesti sociali o di lavoro, sono spesso io a rompere il ghiaccio o a proporre attività.'},
+  {dim:'E', text:'Mi ricarico facilmente anche dopo giornate intense e mi sveglio motivato.'},
+  {dim:'E', text:'Ho ambizioni chiare per la mia carriera e lavoro attivamente per raggiungerle.'},
+  {dim:'A', text:'Ascolto con attenzione i colleghi prima di esprimere la mia opinione, anche quando non sono d\'accordo.'},
+  {dim:'A', text:'Quando c\'è un conflitto nel team, cerco attivamente una soluzione che soddisfi tutte le parti.'},
+  {dim:'A', text:'Mi viene naturale aiutare i colleghi in difficoltà, anche se non è strettamente il mio compito.'},
+  {dim:'A', text:'Ritengo che il successo di un team sia più soddisfacente del successo individuale.'},
+  {dim:'A', text:'Adatto il mio stile comunicativo a seconda dell\'interlocutore (cliente, collega, superiore).'},
+  {dim:'N', text:'Di fronte a critiche o feedback negativi, riesco a rimanere sereno e a trarne valore.'},
+  {dim:'N', text:'Nelle situazioni di forte pressione, mantengo lucidità e non lascio che lo stress comprometta le mie decisioni.'},
+  {dim:'N', text:'Quando qualcosa va storto, riesco ad analizzare la situazione senza essere travolto dalle emozioni negative.'},
+  {dim:'N', text:'Recupero rapidamente il mio equilibrio dopo una delusione o un fallimento professionale.'},
+  {dim:'N', text:'Non ho difficoltà a separarmi emotivamente da decisioni che altri non condividono.'},
+  {dim:'L', text:'Mi trovo spesso a coordinare le attività di altri, anche senza un ruolo formale di gestione.'},
+  {dim:'L', text:'So motivare le persone intorno a me facendole sentire parte di qualcosa di importante.'},
+  {dim:'L', text:'Riesco a prendere decisioni difficili anche quando non ho tutte le informazioni che vorrei.'},
+  {dim:'L', text:'Le persone tendono a chiedermi consiglio o a seguire le mie indicazioni in situazioni complesse.'},
+  {dim:'L', text:'Mi sento a mio agio nel rappresentare la mia squadra davanti ad altre funzioni o alla direzione.'}
+];
+
+const OPTIONS = ['Per nulla', 'Raramente', 'A volte', 'Spesso', 'Sempre'];
+
+let current = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+let userName = '', userRole = '', userEmail = '';
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function startTest() {
+  userName = document.getElementById('user-name').value.trim();
+  userRole = document.getElementById('user-role').value.trim();
+  userEmail = document.getElementById('user-email').value.trim();
+  if (!userName) { alert('Per favore inserisci il tuo nome.'); return; }
+  showScreen('screen-questions');
+  renderQ();
+}
+
+function renderQ() {
+  const q = QUESTIONS[current];
+  const dim = DIMS.find(d => d.id === q.dim);
+  const pct = Math.round((current / QUESTIONS.length) * 100);
+
+  document.getElementById('q-counter').textContent = (current + 1) + ' / ' + QUESTIONS.length;
+  document.getElementById('q-dim-label').textContent = dim.name;
+  document.getElementById('q-dim').textContent = dim.name;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  const opts = document.getElementById('q-options');
+  opts.innerHTML = '';
+  OPTIONS.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (answers[current] === i ? ' selected' : '');
+    btn.textContent = opt;
+    btn.onclick = () => selectAnswer(i);
+    opts.appendChild(btn);
+  });
+
+  document.getElementById('btn-prev').disabled = current === 0;
+  document.getElementById('btn-next').disabled = answers[current] === null;
+  const isLast = current === QUESTIONS.length - 1;
+  document.getElementById('btn-next').textContent = isLast ? 'Invia risultati' : 'Avanti →';
+
+  // re-animate card
+  const card = document.getElementById('q-card');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = '';
+}
+
+function selectAnswer(i) {
+  answers[current] = i;
+  document.querySelectorAll('.option-btn').forEach((b, idx) => {
+    b.classList.toggle('selected', idx === i);
+  });
+  document.getElementById('btn-next').disabled = false;
+}
+
+function prevQ() { if (current > 0) { current--; renderQ(); } }
+function nextQ() {
+  if (answers[current] === null) return;
+  if (current < QUESTIONS.length - 1) { current++; renderQ(); }
+  else submitResults();
+}
+
+function computeScores() {
+  const sums = {}, counts = {};
+  DIMS.forEach(d => { sums[d.id] = 0; counts[d.id] = 0; });
+  QUESTIONS.forEach((q, i) => {
+    if (answers[i] !== null) { sums[q.dim] += answers[i]; counts[q.dim]++; }
+  });
+  const scores = {};
+  DIMS.forEach(d => {
+    scores[d.id] = counts[d.id] > 0 ? Math.round((sums[d.id] / (counts[d.id] * 4)) * 100) : 0;
+  });
+  return scores;
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━
+DATI CANDIDATO
+━━━━━━━━━━━━━━━━━━━━━━━
+Nome: ${userName}
+Ruolo/Azienda: ${userRole || 'Non specificato'}
+Email: ${userEmail || 'Non specificata'}
+
+━━━━━━━━━━━━━━━━━━━━━━━
+PUNTEGGI PER DIMENSIONE
+━━━━━━━━━━━━━━━━━━━━━━━
+${dimLines}
+
+Media complessiva: ${avg}/100
+
+━━━━━━━━━━━━━━━━━━━━━━━
+RISPOSTE DETTAGLIATE
+━━━━━━━━━━━━━━━━━━━━━━━
+${rawAnswers}`;
+}
+
+function submitResults() {
+  const scores = computeScores();
+  const overlay = document.getElementById('sending-overlay');
+  overlay.classList.add('active');
+
+  // Build scores string
+  const scoresText = DIMS.map(d => d.full + ': ' + scores[d.id] + '/100').join('\n');
+  const avg = Math.round(Object.values(scores).reduce((a,b)=>a+b,0)/6);
+  const scoresFormatted = scoresText + '\n\nMedia complessiva: ' + avg + '/100';
+
+  // Build detailed answers
+  const rawAnswers = QUESTIONS.map((q,i) => {
+    const dim = DIMS.find(d=>d.id===q.dim);
+    return '[' + dim.name + '] ' + q.text + '\n→ ' + (answers[i] !== null ? OPTIONS[answers[i]] + ' (' + answers[i] + '/4)' : 'N/A');
+  }).join('\n\n');
+
+  const now = new Date().toLocaleString('it-IT');
+
+  emailjs.init('MIf1ZkABgQTBMusN-');
+  emailjs.send('service_0uenvpe', 'p44o6ec', {
+    candidate_name: userName,
+    candidate_role: userRole || 'Non specificato',
+    candidate_email: userEmail || 'Non specificata',
+    date: now,
+    scores: scoresFormatted,
+    message: rawAnswers,
+    name: userName,
+    email: userEmail || 'noreply@real.it',
+    title: 'Assessment — ' + userName
+  }).then(() => {
+    overlay.classList.remove('active');
+    showScreen('screen-thankyou');
+  }).catch((err) => {
+    console.error('EmailJS error:', err);
+    overlay.classList.remove('active');
+    showScreen('screen-thankyou');
+  });
+}
+</script>
+</body>
+</html>
